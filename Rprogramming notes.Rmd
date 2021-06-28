@@ -1,0 +1,96 @@
+---
+title: "Rprogramming notes"
+author: "me"
+date: "6/28/2021"
+output: pdf_document
+---
+# Objects
+create any vector by `vector()`
+list can include 
+explicity wants a integer suffix L 1(num) 1L(int)
+`attributes()` can modify names, dimensions, class, length etc.
+`c()` is a func to be used to create vectors of objects
+finally , by using `vector()` "datatype", length=..
+you can set the vector as you wanted
+then uses `class(x)` to know the datatype currently 
+
+```{r}
+x<- c(0.5, 0.6)     ## numeric 
+x<- c(TRUE, FALSE)  ## logical
+x<- c(T, F)         ## logical
+x<- c("a","b","c")  ## charac
+x<- 9:29            ## integer
+x<- c(1+0i, 2+3i)   ## complex
+
+x <- vector("numeric", length =10)
+x
+class(x)
+```
+
+# mixed objects
+```{r}
+y <- c(2,"y") ## character
+y
+y <- c(TRUE, 3) ## numeric
+y
+y <- c("a", TRUE) ## character
+y
+```
+
+# using as.datatype(x)
+
+```{r}
+x <- 0:8
+x
+class(x)
+as.logical(x)
+as.numeric(x)
+as.character(x)
+as.complex(x)
+```
+
+
+```{r}
+b <- c("1","2","3")
+class(b)
+as.logical(b)
+as.numeric(b)
+```
+
+# lists
+```{r}
+x <- list( TRUE, 2+3i, "g", 3)
+x
+```
+
+
+
+
+
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
