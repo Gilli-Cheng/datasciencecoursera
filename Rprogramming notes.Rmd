@@ -58,39 +58,326 @@ as.numeric(b)
 ```
 
 # lists
+every elements in the lists can be different classes and length
+(dataframe, same length and within cols and rows)
 ```{r}
 x <- list( TRUE, 2+3i, "g", 3)
 x
 ```
 
+# matrices <- vectors that have dimensions
+matrix same class with cols and rows
+create a matrix by 3 ways
+1. `matrix(3:10, ncol=3, nrow = 4)`
+2. made a sequence first, then attribute dimension
+```{r}
+m <- 1:15
+dim(m)<-c(5, 3)
+m
+```
+3. combine vectors into matrix
+```{r}
+x <- 1:4
+y<- 10:13
+cbind(x,y)
+rbind(x,y)
+```
+you can use `dim()` for knowing the col and row for the matrix
+and you've learned `matrix(3:10, ncol=3, nrow = 4)``cbind(a,b)``rbind(x,y)`.
 
-
-
-
-
-
-
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+# factors
+factors are used for represent categorical data
+```{r}
+x<- factor(c("yes", "yes", "no", "yes", "no"))
+x
+table(x)
+unclass(x)
+```
+`table()`can show you how many levels are there
+and `unclass()` can tell you how it's calculate as a integer in R, it attribute 1 as no and 2 as yes, this follows the order of the alphabet, n go forward than y, so if you want to redefine the baseline of the factor, you may use `levels = c("yes", "no")` in the factor func.
+```{r}
+x <- factor(c("yes", "no", "yes", "yes", "no"), levels =c("yes","no"))
+x
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+# missing values
+nan ⊂ na
+nan only finds nan
+na finds both nan and na
+```{r}
+x <- c(1,2,NaN, NA,4)
+is.nan(x)
+is.na(x)
 ```
 
-## Including Plots
+# Data frame
+dataframe doesn't need same class or same length.
+and everyrow have a name
 
-You can also embed plots, for example:
+```{r}
+x <- data.frame(foo = 1:4, bar =c(T,T,F,F))
+x
+nrow(x)
+ncol(x)
+```
+---------------error----------------- 
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+a<- c("   ", "list","matrix","dataframe","same class","X","O","X", "cols and rows","X","O","O","same length","X","O","X")
+dim(a)<- c(4,4)
+a
+```
+```{r}
+b <- data.frame(sameclass = ("X","O","X"),cols&rows <- c("X","O","O"), same_length <-c("X","O","X"))
+b
+```
+---------------fixed-----------------
+prac on my own
+by constructing vectors forwardly, then combine them using data.frame(col = vec)
+```{r}
+sameclass <- c("X","O","X")
+sameclass
+colrow <- c("X","O","O")
+colrow
+same_length <-c("X","O","X")
+same_length
+data1<- c("list","matrix", "data frame")
+data1
+c <- data.frame(datatype = data1, sameclass = sameclass, colrow = colrow, same_length = same_length)
+c
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# name attribute
+```{r}
+x <- 1:3
+names(x)
+names(x) <- c("1st","2nd","3rd")
+names(x)
+x
+```
+
+```{r}
+x <- list(x=1,y=2,c=3)
+x
+```
+
+```{r}
+m <- matrix(1:6, nrow = 3, ncol = 2)
+m
+dimnames(m) <- list(c("a","b","c"),c("one","two"))
+m
+```
+
+# reading data
+`read.table()`
+`read.table()`
+set the `comment.char = ""` if there are no commented line in my file.
+`colClasses= "numeric"`will be wriiten in the read function, and it's really important, it can run FASTER
+, it'll dont't need to figure out the colClasses on its own.
+
+# dput/dget and dump()
+made up a dataframe,then dput it and d get it.
+unlike wrinting out a table or csv file, 
+dput and dump preserve the metadata(like the pic with json, formateed), so that another user doesn't have to specify it all over again.
+adv : it's textual + metadata, it won't need reconstruct
+
+```{r}
+y <- data.frame(a=1, b="a")
+y
+dput(y)
+dput(y,file = "dputtest.R")
+new.calldput <- dget("dputtest.R")
+new.calldput
+
+```
+dput can only be used in 1 r object,
+dump() can be used on multiple r obj.
+```{r}
+x <- "w"
+y <- data.frame(a=1 , b = "a")
+dump(c("x","y"),file = "dumptry.R")
+rm(x,y)
+source("dumptry.R")
+y
+x
+```
+i still cannot figure out what does source means
+
+# reading files from external
+there are `file()` `url()` `bzfile()`  `gzfile()`
+don't forget close the connection after using it by `close()`.
+
+```{r}
+con <- file("midterm.csv")
+x <- readLines(con, 10)
+x
+
+hey <- url("https://www.jhsph.edu","r")
+x <- readLines(hey,10)
+head(x)
+```
+
+# subsetting 
+`[]` returns 
+`[[]]`
+`$`
+```{r}
+x <- c("a","b","c","c","d","a")
+x
+x[1]
+x[2]
+x[2:5]
+x[3:7]
+x[x> "b"]
+u <- x > "b"
+u
+x[u]  
+```
+
+subsetting lists
+```{r}
+x <- list(foo = 1:4, bar =0.6)
+x ## it'll print 2 list with name and sequence
+x[1] ## the first list
+
+## same returns : the sequence of the first list
+x[[1]] 
+x[["foo"]]
+x$f
+x[["f", exact = FALSE]]
+
+x["bar"] ## the 2nd list
+x$bar ## $ is similar to [[]]
+x[[2]]
+x$b
+```
+
+```{r}
+x<- list(foo = 1:4, bar = 0.6, baz = "hello")
+x ## can see 3 lists
+x[c(2,3)] ## choosing multiple  ele
+ 
+name <- "foo"
+x[name] ## whole list
+x[[name]] ## sequence only
+x$name ## NULL　$ can only be used with literal name
+x$foo ## sequence
+```
+
+```{r}
+x <- list(a= list(11,13,15),b = c(3.14,2.81))
+x ## a as a list will have index. bdoes not
+x[[c(1,2)]]
+x[[1]][[3]]
+x[[c(2,1)]]
+x[[2]][[2]]
+```
+subsetting matrix
+```{r}
+x <- matrix(1:6,2,3) ## data row col
+x
+x[1,2] ## row=1 col=2 but only number returns
+x[1,2,drop = FALSE] ## one by one matrix
+x[2, ] ## row =2 col= 
+x[2, ,drop = FALSE]
+
+
+
+```
+
+# partial matching
+a tool that saves you from typing
+```{r}
+x <- list(allthatbase = 1:5)
+x$a
+x[["a"]] ## [[]] needs the exact name, no partial mathching
+x[["a", exact = FALSE]] ## Turn off the default
+```
+
+# reremoving NA values
+using`is.na()` to return the logical response
+and`x[!bad]` to exclude the ele that reach `is.na()`
+```{r}
+x <-  c(1, 2, NA , 4, NA, 5)
+x
+x[3]
+bad <- is.na(x) ## is.na() is a function of NA logical return
+bad
+x[!bad]
+```
+
+
+`complete.cases()` is a func to record the index of complete cases in the list, watch out for using wrong index!!
+```{r}
+x <- c(1, 2, NA , 4, NA, 5, NA)
+y <- c("a", "b", NA, "d", NA, "f", "g")
+
+xgood <- complete.cases(x)
+xgood
+ygood <- complete.cases(y)
+ygood
+allgood <- complete.cases(x,y)
+allgood
+
+x[ygood]
+x[xgood]
+y[ygood]
+
+cc <- data.frame(x = x, y = y)
+cc
+cc <- complete.cases(cc)
+cc
+```
+
+```{r}
+airquality[1,2]
+airquality[1:10, ]
+good <- complete.cases(airquality)
+airquality[good, ][1:10, ]
+
+data.frame(airquality = airquality[good, ])
+data.frame(airquality[good, ])
+bb <- data.frame(airquality[good, ])
+bb[1:10,] ## without this method, how to add the length into the dataframe??
+```
+
+# quiz
+
+16. how nany missing values are in the Ozone col of this data frame?
+```{r}
+x <- read.csv("hw1_data.csv")
+y = subset(x, is.na(Ozone))
+y
+nrow(y)
+```
+
+17.What is the mean of the Ozone column in this dataset? Exclude missing values (coded as NA) from this calculation.
+```{r}
+z = subset(x, !is.na(Ozone), select = Ozone)
+z
+colMeans(z)
+apply(z,2,mean) ## what does fun = 2 means?
+                ##  for a matrix 1 indicates rows, 2 indicates columns
+```
+
+18.Extract the subset of rows of the data frame where Ozone values are above 31 and Temp values are above 90. What is the mean of Solar.R in this subset?
+```{r}
+b <- subset(x, Ozone > 30 & Temp > 90, select = Solar.R)
+colMeans(b)
+```
+
+19.What is the mean of "Temp" when "Month" is equal to 6?
+```{r}
+c <- subset(x, Month == 6, select = Temp:Month)
+colMeans(c)
+```
+
+What was the maximum ozone value in the month of May (i.e. Month = 5)?
+```{r}
+d <- subset(x, Month == 5 & !is.na(Ozone), select = Ozone)
+## must except the NAs , max will uses the NAs
+apply(d, 2, max)
+```
+
+
+
