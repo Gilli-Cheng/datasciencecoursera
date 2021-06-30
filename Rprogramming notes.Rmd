@@ -2,7 +2,9 @@
 title: "Rprogramming notes"
 author: "me"
 date: "6/28/2021"
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
 ---
 # Objects
 create any vector by `vector()`
@@ -100,8 +102,10 @@ x <- factor(c("yes", "no", "yes", "yes", "no"), levels =c("yes","no"))
 x
 ```
 
+## subset of is not set up for use with latex!!
+
 # missing values
-nan ⊂ na
+nan c na
 nan only finds nan
 na finds both nan and na
 ```{r}
@@ -127,7 +131,8 @@ a<- c("   ", "list","matrix","dataframe","same class","X","O","X", "cols and row
 dim(a)<- c(4,4)
 a
 ```
-```{r}
+
+```
 b <- data.frame(sameclass = ("X","O","X"),cols&rows <- c("X","O","O"), same_length <-c("X","O","X"))
 b
 ```
@@ -260,7 +265,7 @@ x[c(2,3)] ## choosing multiple  ele
 name <- "foo"
 x[name] ## whole list
 x[[name]] ## sequence only
-x$name ## NULL　$ can only be used with literal name
+x$name ## NULL  $ can only be used with literal name
 x$foo ## sequence
 ```
 
