@@ -41,18 +41,23 @@ rankhospital <- function(state, outcome, num = "best") {
                 d2 <- subset(d1, is.na(d1[,2])==FALSE,select = c(Hospital.name,Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack))
         }else if(outcome=="heart failure"){
                 d1 <- d1[order(d1[,3],d1[,1],decreasing = FALSE),]
-                d2 <- subset(d1, is.na(d1)==FALSE,select = c(Hospital.name,Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure))
+                d2 <- subset(d1, is.na(d1[,3])==FALSE,select = c(Hospital.name,Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure))
         }else if(outcome=="pneumonia"){
                 d1 <- d1[order(d1[,4],d1[,1],decreasing = FALSE),]
-                d2 <- subset(d1, is.na(d1)==FALSE,select = c(Hospital.name, Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
+                d2 <- subset(d1, is.na(d1[,4])==FALSE,select = c(Hospital.name, Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia))
         }
         
         
         if(num=="worst") {num <-  nrow(d2)}
+        num <- as.numeric(num)
         N <- c(1:nrow(d2))
         d2 <- cbind(d2,N)
-        output <- subset(d2,num==N)
-        paste(output$Hospital.name)
+        if(num %in% N==TRUE){
+                output <- subset(d2,num==N)
+                paste(output$Hospital.name)
+        }else{
+                paste(NA)        
+                }
         ## 30-day death rate
 }
 
